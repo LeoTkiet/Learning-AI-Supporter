@@ -1,0 +1,50 @@
+
+THỐNG HỖ TRỢ HỌC TẬP ĐA MÔN ÁP DỤNG AI
+Dự án này là một ứng dụng Web toàn diện hỗ trợ người học khắc phục yếu điểm kiến thức thông qua hệ thống đánh giá 3 lớp: trắc nghiệm, tự luận, và phân tích AI. Hệ thống được thiết kế để áp dụng thực tiễn ngay từ đầu các tính năng nâng cao như nhận diện ảnh chụp bài làm (OCR), hỗ trợ đa môn học và đánh giá năng lực qua hệ thống Gamification.
+1. Quy mô và Phạm vi Dự án (Mở rộng Đa môn)
+Thay vì chỉ giới hạn ở môn Toán, cấu trúc dữ liệu và AI Prompts được thiết kế dạng module hóa để triển khai đồng thời cho 3 môn khoa học tự nhiên cốt lõi: Toán Học, Vật Lý, và Hóa Học. Mỗi môn học sẽ có kho dữ liệu câu hỏi và bộ tiêu chí đánh giá (Knowledge Graph) riêng biệt được quản lý thống nhất trên cơ sở dữ liệu.
+2. Các Tính năng Cốt lõi (Core Features)
+2.1. Hệ thống 3 lớp kiểm tra & Nhận diện chữ viết tay (OCR)
+Hệ thống không yêu cầu người dùng phải gõ các công thức tự luận phức tạp. Luồng hoạt động chính bao gồm:
+Lớp 1 - Trắc nghiệm chẩn đoán: Người dùng làm bài kiểm tra nhanh nhiều lựa chọn để khoanh vùng mảng kiến thức yếu.
+Lớp 2 - Tự luận với OCR: Với các câu sai, người dùng giải bài ra giấy, chụp ảnh và tải lên. Hệ thống tích hợp công nghệ Tesseract hoặc Google Cloud Vision để trích xuất văn bản (chữ viết tay và công thức) từ hình ảnh, chuyển đổi thành dữ liệu số (text/LaTeX).
+Lớp 3 - AI Phân tích chuyên sâu: Dữ liệu OCR được đẩy qua Gemini AI. AI sẽ đọc từng bước giải, chỉ ra chính xác học sinh sai ở công thức nào, nhầm lẫn logic ở đâu và đưa ra lời giải thích chi tiết.
+2.2. Hệ thống Dashboard & Gamification
+Để tạo động lực học tập bền vững, hệ thống áp dụng cơ chế trò chơi hóa (Gamification):
+Biểu đồ Radar Năng lực: Trực quan hóa sức mạnh các kỹ năng của từng môn (ví dụ Toán: Đại số, Hình học, Xác suất; Hóa: Vô cơ, Hữu cơ).
+Hệ thống Huy hiệu & Bảng xếp hạng: Người dùng nhận điểm kinh nghiệm (XP) và huy hiệu khi hoàn thành lộ trình khắc phục yếu điểm, cạnh tranh trên Leaderboard.
+Công cụ Prototype: Dashboard sẽ được phát triển và kiểm thử logic nhanh bằng Streamlit trước khi tích hợp chính thức thành các React Components trên Next.js.
+3. Kiến trúc Công nghệ (Miễn phí & Bền vững)
+Hệ thống được thiết kế tối ưu cho sinh viên triển khai với chi phí 0 đồng nhưng vẫn đảm bảo khả năng chịu tải hàng nghìn user nhờ kiến trúc hiện đại.
+Thành phần Hệ thống
+Công nghệ Triển khai
+Lý do & Khả năng Mở rộng
+Frontend
+Next.js, Tailwind CSS, Vercel
+Vercel cung cấp băng thông miễn phí lớn, Next.js tối ưu SEO và tốc độ tải trang. Hỗ trợ hiển thị MathJax/KaTeX cho công thức.
+Backend API
+Python (FastAPI)
+Xử lý mượt mà các tác vụ nặng như nhận diện OCR (Tesseract) và gọi API AI. Triển khai miễn phí qua Render hoặc Railway.
+Database
+Supabase (PostgreSQL)
+Hệ quản trị CSDL quan hệ mạnh mẽ, miễn phí Authentication, Real-time database phù hợp làm bảng xếp hạng Leaderboard.
+AI Core
+Gemini API, Tesseract/Vision
+Gemini xử lý logic Toán/Lý/Hóa vượt trội. Tesseract/Vision giải quyết triệt để rào cản nhập liệu công thức.
+
+4. Phân công Nhiệm vụ Thực thi (Cập nhật tính năng mới)
+4.1. Software Engineer (Kỹ sư Phần mềm)
+Xây dựng UI/UX đồng bộ cho Toán, Lý, Hóa bằng Next.js và Tailwind.
+Phát triển chức năng Upload ảnh chụp bài làm tự luận.
+Thiết kế hệ thống Gamification trên Frontend: Vẽ biểu đồ Radar bằng thư viện (như Recharts hoặc Chart.js), hiển thị huy hiệu và bảng xếp hạng.
+Kiến thức cần bổ sung: Xử lý File Upload trong React, tích hợp thư viện vẽ biểu đồ đa giác, quản lý State phức tạp.
+4.2. AI Engineer (Kỹ sư AI)
+Xây dựng pipeline nhận diện hình ảnh OCR: Nhận ảnh từ Frontend, dùng Tesseract/Google Cloud Vision trích xuất text/công thức.
+Thiết kế Prompt Engineering chuyên biệt cho 3 môn Toán, Lý, Hóa. Yêu cầu AI chấm điểm dựa trên kết quả OCR.
+Lập trình kịch bản xử lý lỗi khi chữ viết tay quá xấu (yêu cầu chụp lại hoặc AI dự đoán theo ngữ cảnh).
+Kiến thức cần bổ sung: Thư viện Tesseract (pytesseract) hoặc API Google Vision, xử lý ảnh cơ bản (OpenCV) để làm nét ảnh trước khi đọc chữ.
+4.3. DevOps / Backend Engineer (Kỹ sư Hệ thống)
+Thiết kế Database đa môn học: Bảng Subjects (Toán/Lý/Hóa), bảng User_Stats (lưu điểm kinh nghiệm XP, huy hiệu), bảng Leaderboard.
+Viết API FastAPI nhận ảnh từ người dùng, đẩy sang module của AI Engineer, lưu kết quả về Supabase.
+Dựng Dashboard phân tích dữ liệu nhanh nội bộ bằng Streamlit kết nối thẳng vào Supabase.
+Kiến thức cần bổ sung: Quản lý luồng xử lý File trên API (FastAPI UploadFile), lập trình Python Streamlit, thiết kế Schema CSDL phức tạp có quan hệ đa - đa.
