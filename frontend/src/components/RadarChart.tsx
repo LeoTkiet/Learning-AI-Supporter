@@ -1,5 +1,4 @@
-"use client";
-
+import React from 'react';
 import {
   Radar,
   RadarChart as RechartsRadarChart,
@@ -7,56 +6,50 @@ import {
   PolarAngleAxis,
   PolarRadiusAxis,
   ResponsiveContainer,
-  Tooltip,
-} from "recharts";
-import { SkillScore } from "@/types";
+} from 'recharts';
+
+interface RadarDataPoint {
+  subject: string;
+  score: number;
+  fullMark: number;
+}
 
 interface RadarChartProps {
-  skills: SkillScore[];
-  subjectColor?: string;
+  data?: RadarDataPoint[];
+  title?: string;
 }
 
-export function RadarChart({ skills, subjectColor = "#3B82F6" }: RadarChartProps) {
-  const chartData = skills.map((s) => ({
-    topic: s.topic_name,
-    score: s.mastery_score,
-    fullMark: 100,
-  }));
+const defaultData: RadarDataPoint[] = [
+  { subject: 'Đại số', score: 85, fullMark: 100 },
+  { subject: 'Giải tích', score: 65, fullMark: 100 },
+  { subject: 'Hình học Oxyz', score: 70, fullMark: 100 },
+  { subject: 'Dao động cơ', score: 90, fullMark: 100 },
+  { subject: 'Điện xoay chiều', score: 60, fullMark: 100 },
+  { subject: 'Hóa hữu cơ', score: 75, fullMark: 100 },
+];
 
+export const RadarChart: React.FC<RadarChartProps> = ({ data = defaultData, title = "Biểu Đồ Radar Năng Lực" }) => {
   return (
-    <div className="w-full h-80 flex items-center justify-center">
-      <ResponsiveContainer width="100%" height="100%">
-        <RechartsRadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
-          <PolarGrid stroke="#374151" strokeDasharray="3 3" />
-          <PolarAngleAxis
-            dataKey="topic"
-            tick={{ fill: "#9CA3AF", fontSize: 12, fontWeight: 500 }}
-          />
-          <PolarRadiusAxis
-            angle={30}
-            domain={[0, 100]}
-            stroke="#4B5563"
-            tick={{ fill: "#6B7280", fontSize: 10 }}
-          />
-          <Tooltip
-            contentStyle={{
-              backgroundColor: "#1F2937",
-              borderColor: "#374151",
-              borderRadius: "0.5rem",
-              color: "#F3F4F6",
-              fontSize: "12px",
-            }}
-            formatter={(value: any) => [`${value}/100 điểm`, "Năng lực"]}
-          />
-          <Radar
-            name="Điểm Năng Lực"
-            dataKey="score"
-            stroke={subjectColor}
-            fill={subjectColor}
-            fillOpacity={0.45}
-          />
-        </RechartsRadarChart>
-      </ResponsiveContainer>
+    <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
+      <h3 className="text-lg font-semibold text-gray-800 mb-4">{title}</h3>
+      <div className="w-full h-72">
+        <ResponsiveContainer width="100%" height="100%">
+          <RechartsRadarChart data={data}>
+            <PolarGrid stroke="#e5e7eb" />
+            <PolarAngleAxis dataKey="subject" stroke="#4b5563" />
+            <PolarRadiusAxis angle={30} domain={[0, 100]} stroke="#9ca3af" />
+            <Radar
+              name="Năng lực"
+              dataKey="score"
+              stroke="#4f46e5"
+              fill="#6366f1"
+              fillOpacity={0.5}
+            />
+          </RechartsRadarChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
-}
+};
+
+export default RadarChart;
