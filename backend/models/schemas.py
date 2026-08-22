@@ -21,6 +21,11 @@ class QuizSubmission(BaseModel):
     answers: Dict[str, str]  # {question_id: selected_option}
 
 # --- Schemas OCR & Nhận Diện ---
+class MathOCRResponse(BaseModel):
+    status: str = Field(default="success", description="Status of the OCR operation ('success' or 'error')")
+    processing_time_ms: float = Field(..., description="End-to-end processing latency in milliseconds")
+    latex_formula: str = Field(..., description="Extracted LaTeX formula from the image")
+
 class OCRResponse(BaseModel):
     success: bool
     extracted_text: str
