@@ -2,18 +2,21 @@ import os
 import time
 from fastapi import APIRouter, UploadFile, File, Form, Header, HTTPException, Depends
 from typing import List, Dict, Any, Optional
-from backend.models.schemas import (
+from models.schemas import (
     Subject, QuizQuestion, QuizSubmission, OCRResponse, MathOCRResponse,
-    AIAnalysisRequest, AIAnalysisResponse, LeaderboardUser
+    AIAnalysisRequest, AIAnalysisResponse, LeaderboardUser,
+    UserLoginRequest, UserRegisterRequest, ForgotPasswordRequest,
+    UserProfile, AuthResponse
 )
-from backend.ai.ocr.ocr_engine import OCREngine
-from backend.ai.ocr.image_processing import (
+from core.database import get_supabase
+from ai.ocr.ocr_engine import OCREngine
+from ai.ocr.image_processing import (
     validate_image_content_type, decode_image_from_bytes, enhance_image_for_ocr
 )
-from backend.ai.ocr.math_ocr_service import (
+from ai.ocr.math_ocr_service import (
     MathOCRService, MockMathOCRService, GeminiMathOCRService, parse_api_keys
 )
-from backend.ai.llm.gemini_client import GeminiAIClient
+from ai.llm.gemini_client import GeminiAIClient
 
 router = APIRouter()
 
@@ -27,7 +30,185 @@ def get_math_ocr_service() -> MathOCRService:
             pass
     return MockMathOCRService()
 
-# --- Endpoint Môn Học & Trắc Nghiệm ---
+# ==========================================
+# 1. AUTHENTICATION & USER ENDPOINTS
+# ==========================================
+
+@router.post("/auth/login", response_model=AuthResponse)
+async def login(credentials: UserLoginRequest):
+    """
+    Xác thực đăng nhập tài khoản bằng email/mật khẩu qua Supabase Auth.
+    Nếu Supabase chưa kết nối, tự động fallback chế độ development để kiểm thử giao diện.
+    """
+    supabase = get_supabase()
+    if supabase:
+        try:
+            res = supabase.auth.sign_in_with_password({
+                "email": credentials.email,
+                "password": credentials.password
+            })
+            if res.user and res.session:
+                user_meta = res.user.user_metadata or {}
+                return AuthResponse(
+                    status="success",
+                    access_token=res.session.access_token,
+                    token_type="bearer",
+                    user=UserProfile(
+                        id=str(res.user.id),
+                        email=res.user.email or credentials.email,
+                        full_name=user_meta.get("full_name") or credentials.email.split("@")[0],
+                        avatar_url=user_meta.get("avatar_url"),
+                        xp=user_meta.get("xp", 100),
+                        streak=user_meta.get("streak", 1)
+                    ),
+                    message="Đăng nhập thành công!"
+                )
+        except Exception as e:
+            err_msg = str(e)
+            if "Invalid login credentials" in err_msg or "invalid" in err_msg.lower():
+                raise HTTPException(status_code=401, detail="Email hoặc mật khẩu không chính xác.")
+            raise HTTPException(status_code=400, detail=f"Lỗi đăng nhập Supabase: {err_msg}")
+    
+    # Development/Demo fallback if Supabase is not connected
+    return AuthResponse(
+        status="success",
+        access_token="mock-jwt-token-dev-mode",
+        token_type="bearer",
+        user=UserProfile(
+            id="dev-user-001",
+            email=credentials.email,
+            full_name=credentials.email.split("@")[0].capitalize(),
+            avatar_url="https://api.dicebear.com/7.x/bottts/svg?seed=" + credentials.email,
+            xp=250,
+            streak=5
+        ),
+        message="Đăng nhập thành công (Chế độ phát triển)!"
+    )
+
+
+@router.post("/auth/register", response_model=AuthResponse)
+async def register(payload: UserRegisterRequest):
+    """
+    Đăng ký tài khoản mới qua Supabase Auth.
+    """
+    supabase = get_supabase()
+    if supabase:
+        try:
+            res = supabase.auth.sign_up({
+                "email": payload.email,
+                "password": payload.password,
+                "options": {
+                    "data": {
+                        "full_name": payload.full_name or payload.email.split("@")[0],
+                        "xp": 0,
+                        "streak": 0
+                    }
+                }
+            })
+            if res.user:
+                token = res.session.access_token if res.session else "confirmation-pending-token"
+                return AuthResponse(
+                    status="success",
+                    access_token=token,
+                    token_type="bearer",
+                    user=UserProfile(
+                        id=str(res.user.id),
+                        email=res.user.email or payload.email,
+                        full_name=payload.full_name or payload.email.split("@")[0],
+                        xp=0,
+                        streak=0
+                    ),
+                    message="Đăng ký thành công! Vui lòng kiểm tra email để xác thực tài khoản."
+                )
+        except Exception as e:
+            raise HTTPException(status_code=400, detail=f"Lỗi đăng ký Supabase: {str(e)}")
+
+    # Demo fallback
+    return AuthResponse(
+        status="success",
+        access_token="mock-jwt-token-registered",
+        token_type="bearer",
+        user=UserProfile(
+            id="new-dev-user",
+            email=payload.email,
+            full_name=payload.full_name or payload.email.split("@")[0],
+            xp=0,
+            streak=0
+        ),
+        message="Đăng ký tài khoản thành công (Chế độ phát triển)!"
+    )
+
+
+@router.post("/auth/forgot-password")
+async def forgot_password(payload: ForgotPasswordRequest):
+    """
+    Gửi email khôi phục mật khẩu qua Supabase.
+    """
+    supabase = get_supabase()
+    if supabase:
+        try:
+            supabase.auth.reset_password_for_email(payload.email)
+            return {"status": "success", "message": "Email đặt lại mật khẩu đã được gửi thành công."}
+        except Exception as e:
+            raise HTTPException(status_code=400, detail=f"Lỗi gửi email khôi phục: {str(e)}")
+    
+    return {"status": "success", "message": "Email đặt lại mật khẩu đã được gửi (Chế độ phát triển)."}
+
+
+@router.get("/auth/me", response_model=UserProfile)
+async def get_current_user_profile(authorization: Optional[str] = Header(default=None)):
+    """
+    Lấy thông tin người dùng hiện tại từ JWT Bearer token.
+    """
+    if not authorization or not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Thiếu Authorization header Bearer token.")
+    
+    token = authorization.split(" ")[1]
+    supabase = get_supabase()
+    if supabase and token != "mock-jwt-token-dev-mode":
+        try:
+            res = supabase.auth.get_user(token)
+            if res.user:
+                meta = res.user.user_metadata or {}
+                return UserProfile(
+                    id=str(res.user.id),
+                    email=res.user.email or "user@example.com",
+                    full_name=meta.get("full_name"),
+                    avatar_url=meta.get("avatar_url"),
+                    xp=meta.get("xp", 0),
+                    streak=meta.get("streak", 0)
+                )
+        except Exception:
+            raise HTTPException(status_code=401, detail="Token không hợp lệ hoặc đã hết hạn.")
+    
+    return UserProfile(
+        id="dev-user-001",
+        email="student@ai-supporter.edu.vn",
+        full_name="Học Sinh Chuyên Cần",
+        avatar_url="https://api.dicebear.com/7.x/bottts/svg?seed=student",
+        xp=250,
+        streak=5
+    )
+
+
+@router.post("/auth/logout")
+async def logout():
+    """
+    Đăng xuất người dùng.
+    """
+    supabase = get_supabase()
+    if supabase:
+        try:
+            supabase.auth.sign_out()
+        except Exception:
+            pass
+    return {"status": "success", "message": "Đăng xuất thành công."}
+
+
+# ==========================================
+# 2. MÔN HỌC & TRẮC NGHIỆM CHẨN ĐOÁN
+# ==========================================
+
 @router.get("/subjects", response_model=List[Subject])
 async def get_subjects():
     return [
@@ -57,7 +238,11 @@ async def submit_quiz(submission: QuizSubmission):
         "weak_topics": ["Đổi đơn vị SI", "Dao động cơ"]
     }
 
-# --- Endpoint Nhận UploadFile & OCR ---
+
+# ==========================================
+# 3. MATHEMATICAL OCR & IMAGE PROCESSING
+# ==========================================
+
 @router.post("/extract-math", response_model=MathOCRResponse)
 async def extract_math_formula(
     file: UploadFile = File(...),
@@ -132,7 +317,11 @@ async def upload_handwriting_solution(file: UploadFile = File(...)):
     result = OCREngine.extract_text(contents)
     return result
 
-# --- Endpoint Phân Tích Gemini AI ---
+
+# ==========================================
+# 4. GEMINI AI PEDAGOGICAL ANALYSIS
+# ==========================================
+
 @router.post("/ai/analyze", response_model=AIAnalysisResponse)
 async def analyze_with_gemini(request: AIAnalysisRequest):
     """
@@ -145,7 +334,11 @@ async def analyze_with_gemini(request: AIAnalysisRequest):
     )
     return result
 
-# --- Endpoint Gamification & Leaderboard ---
+
+# ==========================================
+# 5. GAMIFICATION & LEADERBOARD
+# ==========================================
+
 @router.get("/gamification/leaderboard", response_model=List[LeaderboardUser])
 async def get_leaderboard():
     return [

@@ -25,7 +25,7 @@ load_dotenv(override=False)
 
 import numpy as np
 from PIL import Image
-from backend.ai.ocr.image_processing import cv2_to_pil
+from ai.ocr.image_processing import cv2_to_pil
 
 
 def parse_api_keys(raw_input: Optional[Union[str, List[str]]] = None) -> List[str]:

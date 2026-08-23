@@ -54,12 +54,23 @@ class Settings(BaseSettings):
     GEMINI_API_KEYS: Optional[str] = None
     GEMINI_MODEL: str = "gemini-2.0-flash"
     
-    # Supabase (PostgreSQL)
+    # Supabase (PostgreSQL & Auth)
     SUPABASE_URL: Optional[str] = None
     SUPABASE_ANON_KEY: Optional[str] = None
+    NEXT_PUBLIC_SUPABASE_URL: Optional[str] = None
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: Optional[str] = None
     
     # OCR
     TESSERACT_CMD_PATH: Optional[str] = "tesseract"
+
+    @property
+    def supabase_url(self) -> Optional[str]:
+        return self.SUPABASE_URL or self.NEXT_PUBLIC_SUPABASE_URL or os.getenv("SUPABASE_URL") or os.getenv("NEXT_PUBLIC_SUPABASE_URL")
+
+    @property
+    def supabase_anon_key(self) -> Optional[str]:
+        return self.SUPABASE_ANON_KEY or self.NEXT_PUBLIC_SUPABASE_ANON_KEY or os.getenv("SUPABASE_ANON_KEY") or os.getenv("NEXT_PUBLIC_SUPABASE_ANON_KEY")
+
 
     model_config = SettingsConfigDict(
         env_file=str(ROOT_DIR / ".env"),

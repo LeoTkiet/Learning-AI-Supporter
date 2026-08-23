@@ -59,3 +59,32 @@ class LeaderboardUser(BaseModel):
     name: str
     xp: int
     streak: int
+
+# --- Schemas Xác Thực & Người Dùng (Auth & User) ---
+class UserLoginRequest(BaseModel):
+    email: str = Field(..., description="Email hoặc tài khoản đăng nhập")
+    password: str = Field(..., min_length=6, description="Mật khẩu tài khoản")
+
+class UserRegisterRequest(BaseModel):
+    email: str = Field(..., description="Email người dùng")
+    password: str = Field(..., min_length=6, description="Mật khẩu")
+    full_name: Optional[str] = Field(None, description="Họ và tên người dùng")
+
+class ForgotPasswordRequest(BaseModel):
+    email: str = Field(..., description="Email cần gửi liên kết đặt lại mật khẩu")
+
+class UserProfile(BaseModel):
+    id: str
+    email: str
+    full_name: Optional[str] = None
+    avatar_url: Optional[str] = None
+    xp: int = 0
+    streak: int = 0
+
+class AuthResponse(BaseModel):
+    status: str = "success"
+    access_token: str
+    token_type: str = "bearer"
+    user: UserProfile
+    message: Optional[str] = None
+
