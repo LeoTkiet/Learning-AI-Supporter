@@ -9,7 +9,48 @@ export const apiClient = axios.create({
   },
 });
 
+// Auto-attach Bearer token from localStorage if available
+apiClient.interceptors.request.use((config) => {
+  if (typeof window !== 'undefined') {
+    const token = localStorage.getItem('auth_token');
+    if (token && config.headers) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  }
+  return config;
+});
+
 export const apiService = {
+  // Authentication & Users
+  login: async (credentials: { email: string; password: string }) => {
+    const response = await apiClient.post('/auth/login', credentials);
+    return response.data;
+  },
+
+  register: async (data: { email: string; password: string; full_name?: string }) => {
+    const response = await apiClient.post('/auth/register', data);
+    return response.data;
+  },
+
+  forgotPassword: async (email: string) => {
+    const response = await apiClient.post('/auth/forgot-password', { email });
+    return response.data;
+  },
+
+  getCurrentUser: async () => {
+    const response = await apiClient.get('/auth/me');
+    return response.data;
+  },
+
+  logout: async () => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user_profile');
+    }
+    const response = await apiClient.post('/auth/logout');
+    return response.data;
+  },
+
   // Lớp 1: Quizzes
   getQuiz: async (subjectId: string) => {
     const response = await apiClient.get(`/quizzes/${subjectId}`);
