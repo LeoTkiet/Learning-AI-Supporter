@@ -1,0 +1,206 @@
+<mxfile host="app.diagrams.net" agent="Codex" pages="3">
+  <diagram id="architecture" name="01 - Kiến trúc tổng thể">
+    <mxGraphModel dx="801" dy="526" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=24;fontStyle=1;fontColor=#1E3C72;" value="Learning AI Supporter — Kiến trúc hiện tại" vertex="1">
+          <mxGeometry height="40" width="700" x="30" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="student" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontStyle=1;" value="Học sinh" vertex="1">
+          <mxGeometry height="60" width="110" x="30" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="frontend" parent="1" style="swimlane;html=1;rounded=1;startSize=34;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=16;" value="&lt;b&gt;Frontend — Next.js 14&lt;/b&gt;&lt;br&gt;localhost:3000&lt;br&gt;&lt;font color=&quot;#666666&quot;&gt;Tailwind CSS, Axios, Recharts&lt;/font&gt;" vertex="1">
+          <mxGeometry height="410" width="440" x="210" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="pages" parent="frontend" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6C8EBF;align=left;spacingLeft=8;" value="&lt;b&gt;Trang / điều hướng&lt;/b&gt;&lt;br&gt;/, /login, /quiz, /submission&lt;br&gt;/evaluation, /chat, /leaderboard&lt;br&gt;&lt;font color=&quot;#666666&quot;&gt;Quiz, Submission, Evaluation, Chat hiện là placeholder&lt;/font&gt;" vertex="1">
+          <mxGeometry height="115" width="400" x="20" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="components" parent="frontend" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6C8EBF;align=left;spacingLeft=8;" value="&lt;b&gt;Components &amp; styles&lt;/b&gt;&lt;br&gt;AppLayout, Navbar, Footer, FeatureCard&lt;br&gt;FileUpload, RadarChart, PlaceholderPage&lt;br&gt;globals.css" vertex="1">
+          <mxGeometry height="90" width="400" x="20" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="feServices" parent="frontend" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6C8EBF;align=left;spacingLeft=8;" value="&lt;b&gt;Services&lt;/b&gt;&lt;br&gt;api.ts: Axios + Bearer token (localStorage)&lt;br&gt;supabaseClient.ts: Google/Facebook OAuth&lt;br&gt;navigation.ts: routes &amp; action links" vertex="1">
+          <mxGeometry height="88" width="400" x="20" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="backend" parent="1" style="swimlane;html=1;rounded=1;startSize=34;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=16;" value="&lt;b&gt;Backend — FastAPI&lt;/b&gt;&lt;br&gt;localhost:8000 /api/v1&lt;br&gt;&lt;font color=&quot;#666666&quot;&gt;CORS, Pydantic schemas, Swagger /docs&lt;/font&gt;" vertex="1">
+          <mxGeometry height="410" width="480" x="760" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="routes" parent="backend" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82B366;align=left;spacingLeft=8;" value="&lt;b&gt;api/routes.py&lt;/b&gt;&lt;br&gt;Auth • Subjects/Quizzes • OCR/Math OCR&lt;br&gt;Gemini analysis • Leaderboard" vertex="1">
+          <mxGeometry height="65" width="440" x="20" y="55" as="geometry" />
+        </mxCell>
+        <mxCell id="schemas" parent="backend" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82B366;align=left;spacingLeft=8;" value="&lt;b&gt;models/schemas.py&lt;/b&gt;&lt;br&gt;Request/response validation: Auth, Quiz, OCR, AI, Gamification" vertex="1">
+          <mxGeometry height="55" width="440" x="20" y="140" as="geometry" />
+        </mxCell>
+        <mxCell id="ai" parent="backend" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82B366;align=left;spacingLeft=8;" value="&lt;b&gt;AI modules&lt;/b&gt;&lt;br&gt;OCR: validation → OpenCV in-memory enhancement → MathOCR service&lt;br&gt;LLM: GeminiAIClient → pedagogical diagnosis" vertex="1">
+          <mxGeometry height="75" width="440" x="20" y="215" as="geometry" />
+        </mxCell>
+        <mxCell id="config" parent="backend" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82B366;align=left;spacingLeft=8;" value="&lt;b&gt;core/config.py &amp; database.py&lt;/b&gt;&lt;br&gt;Environment settings; lazy Supabase client; demo fallback" vertex="1">
+          <mxGeometry height="55" width="440" x="20" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="supabase" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontStyle=1;" value="&lt;b&gt;Supabase&lt;/b&gt;&lt;br&gt;Auth / PostgreSQL" vertex="1">
+          <mxGeometry height="75" width="180" x="1350" y="185" as="geometry" />
+        </mxCell>
+        <mxCell id="gemini" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontStyle=1;" value="&lt;b&gt;Google Gemini&lt;/b&gt;&lt;br&gt;Vision Math OCR &amp; LLM" vertex="1">
+          <mxGeometry height="75" width="180" x="1350" y="355" as="geometry" />
+        </mxCell>
+        <mxCell id="internal" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;align=left;spacingLeft=8;" value="&lt;b&gt;Internal tools&lt;/b&gt;&lt;br&gt;Streamlit dashboard :8501&lt;br&gt;Radar chart, OCR/prompt demo, sample XP table&lt;br&gt;database/schema.sql + seed.sql" vertex="1">
+          <mxGeometry height="115" width="350" x="760" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="docs" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;align=left;spacingLeft=8;" value="&lt;b&gt;Documentation &amp; tests&lt;/b&gt;&lt;br&gt;README, API docs, Supabase/Vercel setup&lt;br&gt;Knowledge graphs: Math, Physics, Chemistry&lt;br&gt;tests/test_extract_math.py" vertex="1">
+          <mxGeometry height="115" width="350" x="1160" y="620" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="student" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;" target="frontend" value="UI interaction">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="frontend" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;" target="backend" value="REST / JSON / multipart">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="backend" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;" target="supabase" value="auth, profile">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="frontend" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;endArrow=block;" target="supabase" value="OAuth">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="730" y="305" />
+              <mxPoint x="730" y="70" />
+              <mxPoint x="1440" y="70" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="backend" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;" target="gemini" value="OCR / analysis">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="internal" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;endArrow=block;" target="backend" value="manual testing">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="learning-flow" name="02 - Luồng học tập 3 lớp">
+    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t" value="Luồng nghiệp vụ đánh giá 3 lớp" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=24;fontStyle=1;fontColor=#1E3C72;" vertex="1" parent="1">
+          <mxGeometry x="30" y="20" width="600" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="start" value="Học sinh mở nền tảng" style="ellipse;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;" vertex="1" parent="1">
+          <mxGeometry x="40" y="250" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="login" value="Đăng nhập&lt;br&gt;email/mật khẩu hoặc OAuth" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;" vertex="1" parent="1">
+          <mxGeometry x="230" y="235" width="165" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="authDecision" value="Supabase có cấu hình?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;" vertex="1" parent="1">
+          <mxGeometry x="455" y="235" width="150" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="supAuth" value="Supabase Auth&lt;br&gt;token + profile" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;" vertex="1" parent="1">
+          <mxGeometry x="675" y="125" width="165" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="demoAuth" value="Demo fallback&lt;br&gt;mock token + profile" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="675" y="360" width="165" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="home" value="Trang chủ: chọn tính năng" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="905" y="235" width="175" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="quiz" value="Lớp 1 — Quiz chẩn đoán&lt;br&gt;GET quiz → POST submit&lt;br&gt;Điểm, câu sai, chủ đề yếu" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" vertex="1" parent="1">
+          <mxGeometry x="1140" y="90" width="220" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="submission" value="Lớp 2 — Nộp ảnh bài giải&lt;br&gt;POST /ocr/upload hoặc /extract-math" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;" vertex="1" parent="1">
+          <mxGeometry x="1140" y="230" width="220" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="ocr" value="Validate ảnh → OpenCV in-memory&lt;br&gt;OCR mock hoặc Gemini Vision&lt;br&gt;Trả text/LaTeX + confidence/latency" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;" vertex="1" parent="1">
+          <mxGeometry x="1430" y="230" width="230" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="analysis" value="Lớp 3 — Gemini AI analysis&lt;br&gt;POST /ai/analyze&lt;br&gt;Bước sai, loại lỗi, phản hồi, bài giải sửa" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;" vertex="1" parent="1">
+          <mxGeometry x="1140" y="380" width="220" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="other" value="Leaderboard: GET /gamification/leaderboard&lt;br&gt;Evaluation &amp; Chat: UI placeholder" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="1140" y="550" width="220" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="start" target="login">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="login" target="authDecision">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a3" value="Có" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="authDecision" target="supAuth">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a4" value="Không" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="authDecision" target="demoAuth">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="supAuth" target="home">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="demoAuth" target="home">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="home" target="quiz">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="home" target="submission">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="submission" target="ocr">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="ocr" target="analysis">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="a11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="home" target="other">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="api-map" name="03 - API và vận hành">
+    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t" value="Bản đồ API, dữ liệu và vận hành" style="text;html=1;strokeColor=none;fillColor=none;align=left;fontSize=24;fontStyle=1;fontColor=#1E3C72;" vertex="1" parent="1">
+          <mxGeometry x="30" y="20" width="600" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="api" value="&lt;b&gt;FastAPI /api/v1&lt;/b&gt;" style="swimlane;html=1;rounded=1;startSize=34;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="80" y="100" width="680" height="510" as="geometry" />
+        </mxCell>
+        <mxCell id="auth" value="&lt;b&gt;Authentication&lt;/b&gt;&lt;br&gt;POST /auth/login, /register, /forgot-password, /logout&lt;br&gt;GET /auth/me&lt;br&gt;Supabase-backed; development fallback" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82B366;align=left;spacingLeft=8;" vertex="1" parent="api">
+          <mxGeometry x="25" y="55" width="630" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="quizapi" value="&lt;b&gt;Diagnostic quiz&lt;/b&gt;&lt;br&gt;GET /subjects • GET /quizzes/{subject_id} • POST /quizzes/submit&lt;br&gt;Current data returned as mock/static values" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82B366;align=left;spacingLeft=8;" vertex="1" parent="api">
+          <mxGeometry x="25" y="155" width="630" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="ocrapi" value="&lt;b&gt;OCR&lt;/b&gt;&lt;br&gt;POST /ocr/upload: mock handwriting extraction&lt;br&gt;POST /extract-math: MIME validation → decode → enhance → MathOCR implementation" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82B366;align=left;spacingLeft=8;" vertex="1" parent="api">
+          <mxGeometry x="25" y="245" width="630" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="aiapi" value="&lt;b&gt;AI &amp; gamification&lt;/b&gt;&lt;br&gt;POST /ai/analyze → GeminiAIClient&lt;br&gt;GET /gamification/leaderboard (static mock data)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82B366;align=left;spacingLeft=8;" vertex="1" parent="api">
+          <mxGeometry x="25" y="347" width="630" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="contracts" value="&lt;b&gt;Pydantic contracts&lt;/b&gt;&lt;br&gt;Subject, Quiz, OCR, MathOCR, Analysis, Leaderboard, Auth/User" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82B366;align=left;spacingLeft=8;" vertex="1" parent="api">
+          <mxGeometry x="25" y="435" width="630" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="data" value="&lt;b&gt;Supabase&lt;/b&gt;&lt;br&gt;Auth, user profile&lt;br&gt;&lt;font color=&quot;#666666&quot;&gt;SQL schema/seed present for Subjects, User_Stats&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="950" y="130" width="260" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="model" value="&lt;b&gt;Gemini services&lt;/b&gt;&lt;br&gt;GeminiMathOCRService: API-key rotation + model fallback&lt;br&gt;GeminiAIClient: pedagogical analysis" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="950" y="355" width="330" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="ops" value="&lt;b&gt;Local delivery&lt;/b&gt;&lt;br&gt;Next.js :3000&lt;br&gt;FastAPI :8000 (Swagger /docs)&lt;br&gt;Streamlit :8501&lt;br&gt;Supabase/Vercel setup guide" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="950" y="580" width="260" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="x1" value="Auth calls" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="auth" target="data">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="x2" value="Vision OCR / analysis" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="ocrapi" target="model">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="x3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;" edge="1" parent="1" source="aiapi" target="model">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="x4" value="runs against" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=block;" edge="1" parent="1" source="ops" target="api">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

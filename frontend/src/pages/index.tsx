@@ -1,66 +1,107 @@
 import React from 'react';
 import Link from 'next/link';
-import RadarChart from '@/components/RadarChart';
+import { 
+  GraduationCap, 
+  Sparkles, 
+  Layers, 
+  CheckCircle2, 
+  Trophy,
+  ArrowRight,
+  Zap
+} from 'lucide-react';
+import AppLayout from '@/components/AppLayout';
+import FeatureCard from '@/components/FeatureCard';
+import { ROUTES, FEATURE_ACTIONS } from '@/services/navigation';
 
 export default function HomePage() {
   return (
-    <div className="space-y-8">
-      {/* Hero Section */}
-      <div className="text-center py-10 bg-gradient-to-r from-indigo-600 to-violet-600 rounded-2xl text-white shadow-lg p-8">
-        <h1 className="text-4xl font-extrabold tracking-tight mb-3">
-          Hệ Thống Học Tập Đa Môn Áp Dụng AI
-        </h1>
-        <p className="text-indigo-100 max-w-2xl mx-auto text-lg mb-6">
-          Khắc phục triệt để lỗ hổng kiến thức Toán, Lý, Hóa qua cơ chế đánh giá 3 lớp: Trắc nghiệm, Tự luận OCR và Gemini AI phân tích.
-        </p>
-        <div className="flex justify-center gap-4">
-          <Link
-            href="/quiz"
-            className="bg-white text-indigo-600 font-semibold px-6 py-3 rounded-lg shadow hover:bg-indigo-50 transition"
-          >
-            Bắt Đầu Làm Trắc Nghiệm
-          </Link>
-          <Link
-            href="/submission"
-            className="bg-indigo-500 text-white font-semibold px-6 py-3 rounded-lg border border-indigo-400 hover:bg-indigo-400 transition"
-          >
-            Tải Ảnh Bài Tự Luận (OCR)
-          </Link>
-        </div>
-      </div>
+    <AppLayout maxWidthClass="max-w-5xl">
+      <div className="space-y-6">
+        
+        {/* 1. Main Hub Container (Glassmorphic Card matching login.tsx style) */}
+        <div className="bg-[#f4f7fb]/95 backdrop-blur-md w-full rounded-2xl shadow-2xl p-6 sm:p-10 border border-white/40">
+          
+          {/* Header & Hero Section */}
+          <div className="text-center max-w-2xl mx-auto mb-8">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-[#1e3c72] text-xs font-extrabold uppercase tracking-wider mb-4 shadow-sm">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Nền Tảng Đánh Giá Chẩn Đoán AI Sư Phạm</span>
+            </div>
 
-      {/* Grid Features */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <RadarChart title="Tổng Quan Năng Lực 3 Môn" />
-
-        <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100 flex flex-col justify-between">
-          <div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-3">Quy Trình Khắc Phục Điểm Yếu 3 Lớp</h3>
-            <ul className="space-y-3 text-gray-600 text-sm">
-              <li className="flex items-start gap-2">
-                <span className="bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded text-xs">Lớp 1</span>
-                <span><strong>Trắc nghiệm chẩn đoán:</strong> Khoanh vùng mảng kiến thức yếu.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded text-xs">Lớp 2</span>
-                <span><strong>Tự luận với OCR:</strong> Giải bài ra giấy & nhận diện công thức LaTeX.</span>
-              </li>
-              <li className="flex items-start gap-2">
-                <span className="bg-indigo-100 text-indigo-700 font-bold px-2 py-0.5 rounded text-xs">Lớp 3</span>
-                <span><strong>AI phân tích sâu:</strong> Gemini AI chỉ rõ dòng sai & giải thích chi tiết.</span>
-              </li>
-            </ul>
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-800 tracking-tight mb-3">
+              LEARNING AI SUPPORTER
+            </h1>
+            <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+              Khắc phục triệt để lỗ hổng kiến thức <span className="font-semibold text-[#1e3c72]">Toán - Lý - Hóa</span> thông qua cơ chế đánh giá 3 lớp: Trắc nghiệm chẩn đoán, Tự luận nhận diện OCR và Gemini AI phân tích sư phạm từng bước.
+            </p>
           </div>
-          <div className="mt-6 pt-4 border-t border-gray-100">
+
+          {/* 2. 3-Layer Diagnostic Quick Summary */}
+          <div className="bg-white/80 rounded-xl p-4 sm:p-5 border border-gray-200/80 mb-8 shadow-sm">
+            <div className="flex items-center gap-2 mb-3 text-xs font-bold uppercase tracking-wider text-gray-500">
+              <Layers className="w-4 h-4 text-[#1e3c72]" />
+              <span>Quy Trình Học Tập & Khắc Phục Lỗ Hổng 3 Lớp</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-gray-700">
+              <div className="flex items-start gap-2 bg-blue-50/50 p-2.5 rounded-lg border border-blue-100/80">
+                <span className="font-bold text-[#1e3c72] bg-white px-2 py-0.5 rounded shadow-xs">Lớp 1</span>
+                <span><strong>Trắc nghiệm:</strong> Khoanh vùng chuyên đề & dạng bài còn yếu.</span>
+              </div>
+              <div className="flex items-start gap-2 bg-blue-50/50 p-2.5 rounded-lg border border-blue-100/80">
+                <span className="font-bold text-[#1e3c72] bg-white px-2 py-0.5 rounded shadow-xs">Lớp 2</span>
+                <span><strong>Tự luận & OCR:</strong> Giải ra giấy, nhận diện công thức LaTeX trong RAM.</span>
+              </div>
+              <div className="flex items-start gap-2 bg-blue-50/50 p-2.5 rounded-lg border border-blue-100/80">
+                <span className="font-bold text-[#1e3c72] bg-white px-2 py-0.5 rounded shadow-xs">Lớp 3</span>
+                <span><strong>AI Sư Phạm:</strong> Chỉ đúng dòng sai, phân loại lỗi & giải mẫu.</span>
+              </div>
+            </div>
+          </div>
+
+          {/* 3. 4 Core Feature Cards (User Selection Grid) */}
+          <div className="mb-8">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-base font-bold text-gray-800 flex items-center gap-2">
+                <Zap className="w-4 h-4 text-amber-500 fill-amber-500" />
+                <span>Chọn Tính Năng Bắt Đầu</span>
+              </h2>
+              <span className="text-xs text-gray-500">Chọn 1 trong 4 phân hệ bên dưới</span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              {FEATURE_ACTIONS.map((action, idx) => (
+                <FeatureCard
+                  key={action.href}
+                  title={action.label}
+                  description={action.description || ''}
+                  href={action.href}
+                  badge={action.badge || `Tính năng ${idx + 1}`}
+                  iconName={action.iconName || 'Sparkles'}
+                  isPrimary={idx === 0}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* 4. Bottom Quick Links & Gamification Banner */}
+          <div className="pt-6 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+            <div className="flex items-center gap-2 text-gray-600">
+              <CheckCircle2 className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+              <span>Hỗ trợ nhận diện công thức Toán, Lý, Hóa xử lý trực tiếp trên RAM (Zero Disk I/O).</span>
+            </div>
             <Link
-              href="/leaderboard"
-              className="text-indigo-600 font-medium hover:underline text-sm flex items-center gap-1"
+              href={ROUTES.LEADERBOARD}
+              className="inline-flex items-center gap-1.5 font-bold text-[#1e3c72] hover:text-[#2a5298] bg-white px-3 py-1.5 rounded-lg border border-gray-200 shadow-sm transition hover:shadow"
             >
-              Xem Bảng Xếp Hạng Học Sinh →
+              <Trophy className="w-4 h-4 text-amber-500" />
+              <span>Xem Bảng Xếp Hạng</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
+
         </div>
+
       </div>
-    </div>
+    </AppLayout>
   );
 }
